@@ -4,14 +4,14 @@
 template <typename T, int Span = 10>
 class allocator {
 	class chunk {
-		size_t capacity;
-		size_t used;
+		std::size_t capacity;
+		std::size_t used;
 		T* from;
 		T* to;
 	public:
 		chunk () : capacity ( 0 ), used ( 0 ), from ( nullptr ), to ( nullptr ) {};
 
-		T* allocate ( size_t need ) {
+		T* allocate ( std::size_t need ) {
 			if ( capacity == 0 ) {
 				reserve ( Span * ( need / Span ) + Span );
 			} else if ( need > capacity ) {
@@ -20,7 +20,7 @@ class allocator {
 			return take ( need );
 		}
 
-		bool deallocate ( T* address, size_t victims ) {
+		bool deallocate ( T* address, std::size_t victims ) {
 			if ( address < from || address > to ) {
 				return false;
 			} else if ( victims == used ) {
@@ -35,7 +35,7 @@ class allocator {
 			return true;
 		}
 	private:
-		void reserve ( size_t items ) {
+		void reserve ( std::size_t items ) {
 			capacity = items;
 			from = reinterpret_cast<T*> ( std::malloc ( capacity * sizeof ( T ) ) );
 			if ( !from ) {
@@ -44,7 +44,7 @@ class allocator {
 			to = from;
 		}
 
-		T* take ( size_t need ) {
+		T* take ( std::size_t need ) {
 			capacity -= need;
 			used += need;
 			auto started = to;
