@@ -5,6 +5,10 @@
 template <typename T, typename A = std::allocator<T>>
 class container {
 public:
+	container ( std::size_t reserve = 10 ) {
+		references.reserve ( reserve );
+	}
+
 	void add ( const T value ) {
 		auto address = storage.allocate ( 1 );
 		storage.construct ( address, value );
